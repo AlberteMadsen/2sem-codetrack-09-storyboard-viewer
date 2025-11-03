@@ -61,12 +61,21 @@
         }
 
         .storyboard {
+
+            &.columns-1 {
+                --cols: 1;
+            }
+
             &.columns-2 {
                 --cols: 2;
             }
 
             &.columns-3 {
                 --cols: 3;
+            }
+
+            &.columns-4 {
+                --cols: 4;
             }
 
             .grid {
@@ -151,12 +160,14 @@
             <h1>Storyboard Viewer</h1>
             <div class="controls" aria-hidden="false">
                 <span style="color:var(--muted);font-size:.95rem">Columns:</span>
+                <button data-cols="1" class="active">1</button>
                 <button data-cols="2">2</button>
-                <button data-cols="3" class="active">3</button>
+                <button data-cols="3" >3</button>
+                <button data-cols="4">4</button>
             </div>
         </header>
         <!-- Change the class to `columns-#` to alter the layout. Default: columns-3 -->
-        <main class="storyboard columns-3" id="storyboard">
+        <main class="storyboard columns-1" id="storyboard">
             <section class="grid" id="grid">
                 <!-- Frame 01 -->
                 <figure class="frame">
@@ -293,24 +304,43 @@
     <script>
         (function() {
             const storyboard = document.getElementById('storyboard');
-            const btn2 = document.querySelector('.controls button[data-cols="2"]');
-            const btn3 = document.querySelector('.controls button[data-cols="3"]');
+            const buttons = document.querySelectorAll('.controls button');
 
+            // Funktion til at skifte kolonner
             function setColumns(colNumber) {
-                storyboard.classList.remove('columns-2', 'columns-3');
+                // Fjern tidligere kolonne-klasser
+                storyboard.classList.remove('columns-1', 'columns-2', 'columns-3', 'columns-4');
                 storyboard.classList.add('columns-' + colNumber);
-                const colNumberString = String(colNumber);
-                btn2.classList.toggle('active', colNumberString === '2');
-                btn3.classList.toggle('active', colNumberString === '3');
+
+                // Opdater "active"-knap
+                buttons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.cols === String(colNumber));
+                });
+
+                // Gem valget i localStorage
+                localStorage.setItem('selectedColumns', colNumber);
             }
 
-            btn2.addEventListener('click', function() {
-                setColumns(2);
-            });
-            btn3.addEventListener('click', function() {
-                setColumns(3);
+            // Hent gemt værdi fra localStorage (hvis den findes)
+            const savedCols = localStorage.getItem('selectedColumns');
+
+            // Hvis der findes en gemt værdi, brug den — ellers brug 3 som standard
+            if (savedCols) {
+                setColumns(savedCols);
+            } else {
+                setColumns(1);
+            }
+
+            // Tilføj klik-event til alle knapper
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const colNumber = btn.dataset.cols;
+                    setColumns(colNumber);
+                });
             });
         })();
     </script>
+
+
 </body>
 </html>
