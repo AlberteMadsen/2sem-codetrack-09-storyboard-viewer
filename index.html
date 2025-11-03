@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Storyboard Viewer</title>
+    <style>
+        :root {
+            --gap: 1rem;
+            --max-width: 1100px;
+            --bg: #f7f7f8;
+            --card-bg: #fff;
+            --muted: #666;
+            --cols: 3;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: var(--bg);
+            color: #111;
+        }
+
+        .wrap {
+            max-width: var(--max-width);
+            margin: 1.5rem auto;
+            padding: 1rem;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            h1 {
+                font-size: 1.25rem;
+                margin: 0;
+            }
+
+            .controls {
+                display: flex;
+                gap: .5rem;
+                align-items: center;
+
+                button {
+                    background: #fff;
+                    border: 1px solid #ddd;
+                    padding: .4rem .6rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+
+                    &.active {
+                        border-color: #999;
+                        background: #f0f0f3;
+                    }
+                }
+            }
+        }
+
+        .storyboard {
+            &.columns-2 {
+                --cols: 2;
+            }
+
+            &.columns-3 {
+                --cols: 3;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(var(--cols), 1fr);
+                gap: var(--gap);
+                align-items: start;
+            }
+        }
+
+        figure.frame {
+            margin: 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 6px 18px rgba(18, 22, 26, 0.04);
+            display: flex;
+            flex-direction: column;
+
+            .media {
+                display: block;
+                padding: 0.6rem;
+                box-sizing: border-box;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 6px;
+                    background: #e9e9ea;
+                    margin: 0 auto;
+                }
+            }
+
+            figcaption {
+                padding: 0.75rem 0.9rem 1rem 0.9rem;
+
+                h3 {
+                    margin: .2rem 0;
+                    color: #222;
+                    font-size: 1rem;
+                }
+
+                p {
+                    margin: 0 0.5rem 0.6rem 0;
+                    color: var(--muted);
+                    font-size: .95rem;
+                    line-height: 1.4;
+                }
+
+                .dialogue {
+                    margin: 0 0.5rem 0.6rem 0;
+                    font-style: italic;
+                    color: #222;
+                    background: linear-gradient(90deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.00));
+                    padding: 0.35rem 0.6rem;
+                    border-left: 3px solid rgba(0, 0, 0, 0.06);
+                    border-radius: 4px;
+
+                    .speaker {
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        font-size: .85rem;
+                        margin-right: .45rem;
+                        color: #111;
+                    }
+                }
+
+                .meta {
+                    display: block;
+                    margin-top: .35rem;
+                    color: #8a8a8a;
+                    font-size: .8rem;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <h1>Storyboard Viewer</h1>
+            <div class="controls" aria-hidden="false">
+                <span style="color:var(--muted);font-size:.95rem">Columns:</span>
+                <button data-cols="2">2</button>
+                <button data-cols="3" class="active">3</button>
+            </div>
+        </header>
+        <!-- Change the class to `columns-#` to alter the layout. Default: columns-3 -->
+        <main class="storyboard columns-3" id="storyboard">
+            <section class="grid" id="grid">
+                <!-- Frame 01 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-01" src="assets/frames/frame_01.png" alt="Frame 1">
+                    </div>
+                    <figcaption id="caption-01">
+                        <h3>Frame 1</h3>
+                        <p>Early morning fog lifts from a quiet street. Alex pauses at a lamppost and notices an envelope tucked in the handlebars of an old bicycle.</p>
+                        <p>He slides the paper free and reads only a few words—an invitation and a name he didn't expect.</p>
+                        <p class="dialogue"><span class="speaker">Alex</span>"Cafe. Tonight. — M"</p>
+                        <p class="meta">Found: 7:02 AM · Note left on bicycle</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 02 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-02" src="assets/frames/frame_02.png" alt="Frame 2">
+                    </div>
+                    <figcaption id="caption-02">
+                        <h3>Frame 2</h3>
+                        <p>A close-up of hurried handwriting. The pen leaves uneven strokes; the paper bears a faint coffee ring.</p>
+                        <p>The message is cryptic but deliberate—no explanation, only an invitation. Alex fingers the creases and wonders who 'M' really is.</p>
+                        <p class="dialogue"><span class="speaker">Voiceover</span>"You don't owe an explanation. Just come."</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 03 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-03" src="assets/frames/frame_03.png" alt="Frame 3">
+                    </div>
+                    <figcaption id="caption-03">
+                        <h3>Frame 3</h3>
+                        <p>That evening Alex waits in the corner of a small cafe. The room smells of espresso and cinnamon; every chair seems to hum with other people's stories.</p>
+                        <p>Maya arrives quietly, older and more careful than the person Alex remembers. Their first words are small, like testing a fragile bridge.</p>
+                        <p class="dialogue"><span class="speaker">Maya</span>"You came."</p>
+                        <p class="dialogue"><span class="speaker">Alex</span>"I had to."</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 04 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-04" src="assets/frames/frame_04.png" alt="Frame 4">
+                    </div>
+                    <figcaption id="caption-04">
+                        <h3>Frame 4</h3>
+                        <p>The meeting ends without answers. Outside, the city exhales into dusk—windows light up and the streets slow.</p>
+                        <p>Alex walks alone for a while, the skyline a quiet witness to a conversation that left more questions than it solved.</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 05 -->
+                <figure class="frame">
+                    <div class="media">
+                    <img loading="lazy" id="img-05" src="assets/frames/frame_05.png" alt="Frame 5">
+                    </div>
+                    <figcaption id="caption-05">
+                        <h3>Frame 5</h3>
+                        <p>On a side street a dog chases a paper bag and a small laugh escapes Alex—an ordinary moment that cracks the tension of the night.</p>
+                        <p>It reminds him of how small gestures can change the shape of a memory; he pockets the note and keeps walking.</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 06 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-06" src="assets/frames/frame_06.png" alt="Frame 6">
+                    </div>
+                    <figcaption id="caption-06">
+                        <h3>Frame 6</h3>
+                        <p>Back home, Alex opens an old drawer and pulls out a worn photograph—two kids on a summer day, grinning at the camera.</p>
+                        <p>The photo is proof of a simpler past: Maya at his side, both of them careless and certain. The memory complicates the present.</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 07 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-07" src="assets/frames/frame_07.png" alt="Frame 7">
+                    </div>
+                    <figcaption id="caption-07">
+                        <h3>Frame 7</h3>
+                        <p>A rainstorm arrives the next day. Alex and Maya shelter beneath a small awning and finally speak plainly about the years between them.</p>
+                        <p>The rain muffles the city and makes room for a confession.</p>
+                        <p class="dialogue"><span class="speaker">Maya</span>"I left because I was afraid of what would happen if I stayed."</p>
+                        <p class="dialogue"><span class="speaker">Alex</span>"Afraid of losing me—or yourself?"</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 08 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-08" src="assets/frames/frame_08.png" alt="Frame 8">
+                    </div>
+                    <figcaption id="caption-08">
+                        <h3>Frame 8</h3>
+                        <p>Later that night, under a humming neon sign, Maya tells Alex about mistakes and choices—about a secret she carried alone.</p>
+                        <p>She does not ask for forgiveness; she only asks to be heard. Alex listens, unsure whether compassion or anger should come first.</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 09 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-09" src="assets/frames/frame_09.png" alt="Frame 9">
+                    </div>
+                    <figcaption id="caption-09">
+                        <h3>Frame 9</h3>
+                        <p>They meet on an empty bridge, the city lights reflected behind them. Words fall away; what remains are small, honest admissions.</p>
+                        <p class="dialogue"><span class="speaker">Maya</span>"I'm sorry I left you with the questions."</p>
+                        <p class="dialogue"><span class="speaker">Alex</span>"I'm sorry I stopped asking them."</p>
+                    </figcaption>
+                </figure>
+
+                <!-- Frame 10 -->
+                <figure class="frame">
+                    <div class="media">
+                        <img loading="lazy" id="img-10" src="assets/frames/frame_10.png" alt="Frame 10">
+                    </div>
+                    <figcaption id="caption-10">
+                        <h3>Frame 10</h3>
+                        <p>They end the night at a bench beneath a streetlight. Nothing is fixed and nothing is finished, but the silence between them is no longer heavy.</p>
+                        <p>Alex folds the note and tucks it into his pocket—both a reminder and a choice. They stand up together and walk back toward the city.</p>
+                        <p class="meta">End: quiet, unresolved, hopeful</p>
+                    </figcaption>
+                </figure>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            const storyboard = document.getElementById('storyboard');
+            const btn2 = document.querySelector('.controls button[data-cols="2"]');
+            const btn3 = document.querySelector('.controls button[data-cols="3"]');
+
+            function setColumns(colNumber) {
+                storyboard.classList.remove('columns-2', 'columns-3');
+                storyboard.classList.add('columns-' + colNumber);
+                const colNumberString = String(colNumber);
+                btn2.classList.toggle('active', colNumberString === '2');
+                btn3.classList.toggle('active', colNumberString === '3');
+            }
+
+            btn2.addEventListener('click', function() {
+                setColumns(2);
+            });
+            btn3.addEventListener('click', function() {
+                setColumns(3);
+            });
+        })();
+    </script>
+</body>
+</html>
